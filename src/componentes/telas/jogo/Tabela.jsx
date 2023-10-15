@@ -1,23 +1,22 @@
 import { useContext } from "react";
-import ProdutoContext from "./ProdutoContext";
+import JogoContext from "./JogoContext";
 import Alerta from '../../comuns/Alerta';
-import { formataMoeda } from "../../comuns/Uteis";
 
 function Tabela() {
 
     const { alerta, listaObjetos, remover, novoObjeto, editarObjeto }
-        = useContext(ProdutoContext);
+        = useContext(JogoContext);
 
     return (
         <div style={{ padding: '20px' }}>
-            <h1>Produtos</h1>
+            <h1>Jogos</h1>
             <Alerta alerta={alerta} />
             <button type="button" className="btn btn-primary"
                 data-bs-toggle="modal" data-bs-target="#modalEdicao"
                 onClick={() => novoObjeto()}>
                 Novo <i className="bi bi-file-earmark-plus"></i>
             </button>
-            {listaObjetos.length === 0 && <h1>Nenhum produto encontrado</h1>}
+            {listaObjetos.length === 0 && <h1>Nenhum jogo encontrado</h1>}
             {listaObjetos.length > 0 && (
                 <table className="table">
                     <thead>
@@ -25,12 +24,8 @@ function Tabela() {
                             <th scope="col" style={{ textAlign: 'center' }}>Ações</th>
                             <th scope="col">Código</th>
                             <th scope="col">Nome</th>
-                            <th scope="col">Descrição</th>
-                            <th scope="col">Estoque</th>
-                            <th scope="col">Ativo</th>
-                            <th scope="col">Valor</th>
-                            <th scope="col">Data Cadastro</th>
-                            <th scope="col">Categoria</th>
+                            <th scope="col">Horas Jogadas</th>
+                            <th scope="col">Gênero</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -49,12 +44,8 @@ function Tabela() {
                                 </td>
                                 <td>{objeto.codigo}</td>
                                 <td>{objeto.nome}</td>
-                                <td>{objeto.descricao}</td>
-                                <td>{objeto.quantidade_estoque}</td>
-                                <td>{objeto.ativo ? 'SIM' : 'NÃO'}</td>
-                                <td>{formataMoeda(objeto.valor)}</td>
-                                <td>{objeto.data_cadastro}</td>
-                                <td>{objeto.categoria_nome}</td>
+                                <td>{objeto.horas_jogadas}</td>
+                                <td>{objeto.genero_nome}</td>
                             </tr>
                         ))}
                     </tbody>

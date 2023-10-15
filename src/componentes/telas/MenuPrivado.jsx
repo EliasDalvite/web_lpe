@@ -25,8 +25,8 @@ const MenuPrivado = () => {
                                         Manutenções
                                     </a>
                                     <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <li><NavLink className="dropdown-item" exact="true" to="categorias">Categorias</NavLink></li>
-                                        <li><NavLink className="dropdown-item" exact="true" to="produtos">Produtos</NavLink></li>
+                                        <li><NavLink className="dropdown-item" exact="true" to="generos">Generos</NavLink></li>
+                                        <li><NavLink className="dropdown-item" exact="true" to="jogos">Jogos</NavLink></li>
                                     </ul>
                                 </li>
                             }

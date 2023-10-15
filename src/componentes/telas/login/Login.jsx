@@ -12,7 +12,6 @@ function Login() {
     const [alerta, setAlerta] = useState({ status: "", message: "" });
     const [autenticado, setAutenticado] = useState(false);
     const [carregando, setCarregando] = useState(false);
-
     const acaoLogin = async e => {
         e.preventDefault();
         try {

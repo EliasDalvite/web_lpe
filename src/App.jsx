@@ -4,8 +4,8 @@ import '@popperjs/core/dist/cjs/popper.js'
 import 'bootstrap/dist/js/bootstrap.min.js'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import Home from "./componentes/telas/Home";
-import Categoria from "./componentes/telas/categoria/Categoria";
-import Produto from "./componentes/telas/produto/Produto";
+import Genero from "./componentes/telas/genero/Genero";
+import Jogo from "./componentes/telas/jogo/Jogo";
 import Login from "./componentes/telas/login/Login";
 import MenuPublico from "./componentes/telas/MenuPublico";
 import MenuPrivado from "./componentes/telas/MenuPrivado";
@@ -34,13 +34,13 @@ const router = createBrowserRouter([
         element : <Home/>
       },
       {
-        path : "categorias",
-        element :  <Categoria/>
+        path : "generos",
+        element :  <Genero/>
       }
       ,
       {
-        path : "produtos",
-        element :  <Produto/>
+        path : "jogos",
+        element :  <Jogo/>
       },
       {
         path : "login",

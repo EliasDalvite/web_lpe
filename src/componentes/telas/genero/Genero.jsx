@@ -1,19 +1,17 @@
 import { useState, useEffect } from "react";
-import ProdutoContext from "./ProdutoContext";
-import { getCategoriaServico }
-    from '../../../servicos/CategoriaServico';
+import GeneroContext from "./GeneroContext";
 import {
-    getProdutoServico, getProdutoServicoPorCodigoAPI,
-    deleteProdutoServico, cadastraProdutoServico
+    getGeneroServico, getGeneroServicoPorCodigoAPI,
+    deleteGeneroServico, cadastraGeneroServico
 }
-    from '../../../servicos/ProdutoServico'
+    from '../../../servicos/GeneroServico';
 import Tabela from "./Tabela";
 import Form from "./Form";
 import Carregando from "../../comuns/Carregando";
 import WithAuth from "../../../seguranca/WithAuth";
 import { useNavigate } from "react-router-dom";
 
-function Produto() {
+function Genero() {
 
     let navigate = useNavigate();
 
@@ -22,28 +20,18 @@ function Produto() {
     const [editar, setEditar] = useState(false);
     const [objeto, setObjeto] = useState({ codigo: "", nome: "" });
     const [carregando, setCarregando] = useState(false);
-    const [listaCategorias, setListaCategorias] = useState([]);
 
     const novoObjeto = () => {
         setEditar(false);
         setAlerta({ status: "", message: "" });
-        setObjeto({
-            codigo: 0,
-            nome: "",
-            descricao: "",
-            quantidade_estoque: "",
-            valor: "",
-            ativo: "",
-            data_cadastro: new Date().toISOString().slice(0, 10),
-            categoria: ""
-        });
+        setObjeto({ codigo: 0, nome: "" });
     }
 
     const editarObjeto = async codigo => {
         try {
             setEditar(true);
             setAlerta({ status: "", message: "" });
-            setObjeto(await getProdutoServicoPorCodigoAPI(codigo));
+            setObjeto(await getGeneroServicoPorCodigoAPI(codigo));
         } catch (err) {
             window.location.reload();
             navigate("/login", { replace: true });
@@ -54,7 +42,7 @@ function Produto() {
         e.preventDefault();
         const metodo = editar ? "PUT" : "POST";
         try {
-            let retornoAPI = await cadastraProdutoServico(objeto, metodo);
+            let retornoAPI = await cadastraGeneroServico(objeto, metodo);
             setAlerta({
                 status: retornoAPI.status,
                 message: retornoAPI.message
@@ -67,13 +55,15 @@ function Produto() {
             window.location.reload();
             navigate("/login", { replace: true });
         }
-        recuperaProdutos();
+        recuperaGeneros();
     }
 
-    const recuperaProdutos = async () => {
+
+
+    const recuperaGeneros = async () => {
         try {
             setCarregando(true);
-            setListaObjetos(await getProdutoServico());
+            setListaObjetos(await getGeneroServico());
             setCarregando(false);
         } catch (err) {
             window.location.reload();
@@ -81,19 +71,15 @@ function Produto() {
         }
     }
 
-    const recuperaCategorias = async () => {
-        setListaCategorias(await getCategoriaServico());
-    }
-
     const remover = async codigo => {
         try {
             if (window.confirm('Deseja remover este objeto')) {
-                let retornoAPI = await deleteProdutoServico(codigo);
+                let retornoAPI = await deleteGeneroServico(codigo);
                 setAlerta({
                     status: retornoAPI.status,
                     message: retornoAPI.message
                 });
-                recuperaProdutos();
+                recuperaGeneros();
             }
         } catch (err) {
             window.location.reload();
@@ -108,23 +94,22 @@ function Produto() {
     }
 
     useEffect(() => {
-        recuperaProdutos();
-        recuperaCategorias();
+        recuperaGeneros();
     }, []);
 
     return (
-        <ProdutoContext.Provider value={{
+        <GeneroContext.Provider value={{
             alerta, setAlerta, listaObjetos, remover,
             objeto, editar, acaoCadastrar,
-            handleChange, novoObjeto, editarObjeto, listaCategorias
+            handleChange, novoObjeto, editarObjeto
         }}>
             <Carregando carregando={carregando}>
                 <Tabela />
             </Carregando>
 
             <Form />
-        </ProdutoContext.Provider>
+        </GeneroContext.Provider>
     )
 }
 
-export default WithAuth(Produto);
+export default WithAuth(Genero);

@@ -1,21 +1,21 @@
 import { useContext } from "react";
-import CategoriaContext from "./CategoriaContext";
+import GeneroContext from "./GeneroContext";
 import Alerta from '../../comuns/Alerta';
 
 function Tabela() {
 
-    const { alerta, listaObjetos, remover, novoObjeto, editarObjeto } = useContext(CategoriaContext);
+    const { alerta, listaObjetos, remover, novoObjeto, editarObjeto } = useContext(GeneroContext);
 
     return (
         <div style={{ padding: '20px' }}>
-            <h1>Categorias</h1>
+            <h1>Generos</h1>
             <Alerta alerta={alerta} />
             <button type="button" className="btn btn-primary"
                 data-bs-toggle="modal" data-bs-target="#modalEdicao"
                 onClick={() => novoObjeto()}>
                 Novo <i className="bi bi-file-earmark-plus"></i>
             </button>
-            {listaObjetos.length === 0 && <h1>Nenhuma categoria encontrada</h1>}
+            {listaObjetos.length === 0 && <h1>Nenhum genero encontrado</h1>}
             {listaObjetos.length > 0 && (
                 <table className="table">
                     <thead>

@@ -1,37 +1,45 @@
 import { useState, useEffect } from "react";
-import CategoriaContext from "./CategoriaContext";
+import JogoContext from "./JogoContext";
+import { getGeneroServico }
+    from '../../../servicos/GeneroServico';
 import {
-    getCategoriaServico, getCategoriaServicoPorCodigoAPI,
-    deleteCategoriaServico, cadastraCategoriaServico
+    getJogoServico, getJogoServicoPorCodigoAPI,
+    deleteJogoServico, cadastraJogoServico
 }
-    from '../../../servicos/CategoriaServico';
+    from '../../../servicos/JogoServico'
 import Tabela from "./Tabela";
 import Form from "./Form";
 import Carregando from "../../comuns/Carregando";
 import WithAuth from "../../../seguranca/WithAuth";
 import { useNavigate } from "react-router-dom";
 
-function Categoria() {
+function Jogo() {
 
     let navigate = useNavigate();
 
     const [alerta, setAlerta] = useState({ status: "", message: "" });
     const [listaObjetos, setListaObjetos] = useState([]);
     const [editar, setEditar] = useState(false);
-    const [objeto, setObjeto] = useState({ codigo: "", nome: "" });
+    const [objeto, setObjeto] = useState({codigo: "", nome: ""});
     const [carregando, setCarregando] = useState(false);
+    const [listaGeneros, setListaGeneros] = useState([]);
 
     const novoObjeto = () => {
         setEditar(false);
         setAlerta({ status: "", message: "" });
-        setObjeto({ codigo: 0, nome: "" });
+        setObjeto({
+            codigo: 0,
+            nome: "",
+            horas_jogadas: "",
+            genero: ""
+        });
     }
 
     const editarObjeto = async codigo => {
         try {
             setEditar(true);
             setAlerta({ status: "", message: "" });
-            setObjeto(await getCategoriaServicoPorCodigoAPI(codigo));
+            setObjeto(await getJogoServicoPorCodigoAPI(codigo));
         } catch (err) {
             window.location.reload();
             navigate("/login", { replace: true });
@@ -42,7 +50,7 @@ function Categoria() {
         e.preventDefault();
         const metodo = editar ? "PUT" : "POST";
         try {
-            let retornoAPI = await cadastraCategoriaServico(objeto, metodo);
+            let retornoAPI = await cadastraJogoServico(objeto, metodo);
             setAlerta({
                 status: retornoAPI.status,
                 message: retornoAPI.message
@@ -55,15 +63,13 @@ function Categoria() {
             window.location.reload();
             navigate("/login", { replace: true });
         }
-        recuperaCategorias();
+        recuperaJogos();
     }
 
-
-
-    const recuperaCategorias = async () => {
+    const recuperaJogos = async () => {
         try {
             setCarregando(true);
-            setListaObjetos(await getCategoriaServico());
+            setListaObjetos(await getJogoServico());
             setCarregando(false);
         } catch (err) {
             window.location.reload();
@@ -71,15 +77,19 @@ function Categoria() {
         }
     }
 
+    const recuperaGeneros = async () => {
+        setListaGeneros(await getGeneroServico());
+    }
+
     const remover = async codigo => {
         try {
             if (window.confirm('Deseja remover este objeto')) {
-                let retornoAPI = await deleteCategoriaServico(codigo);
+                let retornoAPI = await deleteJogoServico(codigo);
                 setAlerta({
                     status: retornoAPI.status,
                     message: retornoAPI.message
                 });
-                recuperaCategorias();
+                recuperaJogos();
             }
         } catch (err) {
             window.location.reload();
@@ -94,22 +104,23 @@ function Categoria() {
     }
 
     useEffect(() => {
-        recuperaCategorias();
+        recuperaJogos();
+        recuperaGeneros();
     }, []);
 
     return (
-        <CategoriaContext.Provider value={{
+        <JogoContext.Provider value={{
             alerta, setAlerta, listaObjetos, remover,
             objeto, editar, acaoCadastrar,
-            handleChange, novoObjeto, editarObjeto
+            handleChange, novoObjeto, editarObjeto, listaGeneros
         }}>
             <Carregando carregando={carregando}>
                 <Tabela />
             </Carregando>
 
             <Form />
-        </CategoriaContext.Provider>
+        </JogoContext.Provider>
     )
 }
 
-export default WithAuth(Categoria);
+export default WithAuth(Jogo);

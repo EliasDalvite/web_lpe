@@ -1,8 +1,8 @@
 import { getToken } from "../seguranca/Autenticacao";
 
-export const getCategoriaServico = async () => {
+export const getGeneroServico = async () => {
     const response =
-        await fetch(`${process.env.REACT_APP_ENDERECO_API}/categoria`,
+        await fetch(`${process.env.REACT_APP_ENDERECO_API}/genero`,
             {
                 method: "GET",
                 headers: {
@@ -14,9 +14,9 @@ export const getCategoriaServico = async () => {
     return data;
 }
 
-export const getCategoriaServicoPorCodigoAPI = async codigo => {
+export const getGeneroServicoPorCodigoAPI = async codigo => {
     const response =
-        await fetch(`${process.env.REACT_APP_ENDERECO_API}/categoria/${codigo}`,
+        await fetch(`${process.env.REACT_APP_ENDERECO_API}/genero/${codigo}`,
             {
                 method: "GET",
                 headers: {
@@ -28,9 +28,9 @@ export const getCategoriaServicoPorCodigoAPI = async codigo => {
     return data;
 }
 
-export const deleteCategoriaServico = async codigo => {
+export const deleteGeneroServico = async codigo => {
     const response =
-        await fetch(`${process.env.REACT_APP_ENDERECO_API}/categoria/${codigo}`,
+        await fetch(`${process.env.REACT_APP_ENDERECO_API}/genero/${codigo}`,
             {
                 method: "DELETE",
                 headers: {
@@ -43,8 +43,8 @@ export const deleteCategoriaServico = async codigo => {
 }
 
 
-export const cadastraCategoriaServico = async (objeto, metodo) => {
-    const response = await fetch(`${process.env.REACT_APP_ENDERECO_API}/categoria`, {
+export const cadastraGeneroServico = async (objeto, metodo) => {
+    const response = await fetch(`${process.env.REACT_APP_ENDERECO_API}/genero`, {
         method: metodo,
         headers: {
             "Content-Type": "application/json",
